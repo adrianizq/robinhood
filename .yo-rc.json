@@ -1,0 +1,33 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "authenticationType": "jwt",
+    "backendType": "NodeJS",
+    "baseName": "robinnhood",
+    "blueprints": [
+      {
+        "name": "generator-jhipster-nodejs",
+        "version": "3.2.0"
+      }
+    ],
+    "clientFramework": "react",
+    "clientTestFrameworks": [],
+    "clientTheme": "none",
+    "creationTimestamp": 1766524755030,
+    "databaseType": "mongodb",
+    "enableTranslation": true,
+    "entities": [],
+    "jhipsterVersion": "8.10.0",
+    "languages": ["es", "en"],
+    "microfrontend": null,
+    "microfrontends": [],
+    "nativeLanguage": "es",
+    "prodDatabaseType": "mongodb",
+    "serverPort": null,
+    "testFrameworks": [],
+    "withAdminUi": false
+  },
+  "generator-jhipster-nodejs": {
+    "nodejsVersion": "3.2.0"
+  }
+}
