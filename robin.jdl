@@ -1,0 +1,152 @@
+// =======================================================
+// ENUMS
+// =======================================================
+
+enum UserRole {
+  ADMIN,
+  TEACHER,
+  STUDENT
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE,
+  TRUE_FALSE,
+  SHORT_ANSWER,
+  OPEN_TEXT,
+  CODE,
+  SURVEY,
+  SCALE
+}
+
+enum AssessmentMode {
+  LIVE,
+  ASYNC
+}
+
+enum SessionStatus {
+  CREATED,
+  ACTIVE,
+  FINISHED
+}
+
+enum JoinMethod {
+  PIN,
+  QR,
+  LINK
+}
+
+// =======================================================
+// ENTITIES
+// =======================================================
+
+entity Institution {
+  name String required,
+  code String required unique,
+  active Boolean
+}
+
+entity User {
+  username String required unique,
+  email String required unique,
+  role UserRole required
+}
+
+entity Course {
+  name String required,
+  code String required,
+  academicPeriod String
+}
+
+entity QuestionBank {
+  name String required,
+  description String,
+  shared Boolean
+}
+
+entity Question {
+  statement TextBlob required,
+  type QuestionType required,
+  difficulty Integer,
+  timeLimit Integer,
+  aiGenerated Boolean
+}
+
+entity QuestionOption {
+  text String required,
+  correct Boolean
+}
+
+entity Assessment {
+  title String required,
+  description String,
+  mode AssessmentMode required,
+  shuffleQuestions Boolean,
+  shuffleOptions Boolean,
+  showResults Boolean,
+  allowGuest Boolean
+}
+
+entity AssessmentSession {
+  pin String required,
+  qrToken String required unique,
+  joinMethod JoinMethod required,
+  status SessionStatus required,
+  startTime Instant,
+  endTime Instant,
+  maxParticipants Integer
+}
+
+entity Participant {
+  nickname String,
+  joinMethod JoinMethod,
+  joinedAt Instant,
+  deviceInfo String
+}
+
+entity Response {
+  answer TextBlob,
+  score Double,
+  responseTime Integer
+}
+
+entity AIRecommendation {
+  suggestionType String,
+  content TextBlob,
+  confidence Double,
+  accepted Boolean
+}
+
+// =======================================================
+// RELATIONSHIPS
+// =======================================================
+
+relationship ManyToOne {
+  User to Institution
+  Course to Institution
+  Assessment to Course
+  Assessment to User { creator }
+  Question to QuestionBank
+  QuestionOption to Question
+  AssessmentSession to Assessment
+  Participant to AssessmentSession
+  Participant to User
+  Response to Participant
+  Response to Question
+  AIRecommendation to Question
+  AIRecommendation to Assessment
+}
+
+relationship OneToMany {
+  Assessment to Question
+  Question to QuestionOption
+  AssessmentSession to Participant
+}
+
+// =======================================================
+// OPTIONS
+// =======================================================
+
+paginate Assessment, Question, AssessmentSession, Participant with pagination
+service all with serviceClass
+dto all with mapstruct
+
